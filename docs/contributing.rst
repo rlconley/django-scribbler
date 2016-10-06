@@ -74,7 +74,7 @@ run the tests using the `PhantomJS <http://phantomjs.org/>` headless runner. Fir
 PhantomJS from NPM (requires at least 1.6)::
 
     # Install phantomjs from the NPM package
-    npm install phantomjs -g
+    npm install phantomjs-prebuilt -g
     # Run QUnit tests
     phantomjs scribbler/tests/qunit/runner.js scribbler/tests/qunit/index.html
 
