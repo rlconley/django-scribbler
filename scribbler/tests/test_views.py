@@ -10,7 +10,7 @@ import os
 from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-from  django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import override_settings
 
 from selenium import webdriver
@@ -407,7 +407,8 @@ class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
 
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.Chrome()
+        import pdb; pdb.set_trace()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
