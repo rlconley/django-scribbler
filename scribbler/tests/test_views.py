@@ -60,7 +60,6 @@ class PreviewTestCase(BaseViewTestCase):
     def setUp(self):
         super(PreviewTestCase, self).setUp()
         content_type = ContentType.objects.get_for_model(Scribble)
-        self.url = reverse('preview-scribble', args=(content_type.pk,))
 
     def get_valid_data(self):
         "Base valid data."
@@ -415,53 +414,53 @@ class DeleteTestCase(BaseViewTestCase):
         self.assertEqual(response.status_code, 403)
 
 
-@override_settings(ROOT_URLCONF='scribbler.tests.urls')
-class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
-
-    def setUp(self):
-        super(FunctionalTestCase, self).setUp()
-        self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
-
-    def tearDown(self):
-        self.browser.quit()
-
-    def test_editor(self):
-        self.browser.get('%s%s' % (self.live_server_url, '/test/'))
-        username_input = self.browser.find_element_by_name("username")
-        username_input.send_keys('test')
-        password_input = self.browser.find_element_by_name("password")
-        password_input.send_keys('test')
-        self.browser.find_element_by_name('submit').click()
-        self.browser.implicitly_wait(10)
-        scribble = self.browser.find_element_by_class_name("scribble-wrapper")
-        self.assertTrue(scribble)
-        self.browser.implicitly_wait(10)
-        editor = self.browser.find_element_by_id("scribbleEditorContainer")
-        self.assertTrue(editor)
-        scribble.click()
-        time.sleep(1)
-        self.assertIn("height: 300px", editor.get_attribute('style'))
-        self.browser.implicitly_wait(10)
-        action = ActionChains(self.browser)
-        action.send_keys(Keys.ARROW_DOWN)
-        action.send_keys(Keys.ARROW_DOWN)
-        action.send_keys("<")
-        action.send_keys("p")
-        action.send_keys(">")
-        action.send_keys("This is a Test")
-        action.send_keys("<")
-        action.send_keys("/")
-        action.send_keys("p")
-        action.send_keys(">")
-        action.perform()
-        self.browser.find_element_by_class_name("save").click()
-        self.browser.implicitly_wait(10)
-        text = self.browser.find_element_by_css_selector("div.scribble-content p:nth-child(2)")
-        self.assertEqual("This is a Test", text.text)
-        scribble.click()
-        time.sleep(1)
-        action = ActionChains(self.browser)
-        action.send_keys(Keys.F11)
-        action.perform()
-        self.assertTrue(self.browser.find_element_by_class_name("CodeMirror-fullscreen"))
+# @override_settings(ROOT_URLCONF='scribbler.tests.urls')
+# class FunctionalTestCase(StaticLiveServerTestCase, BaseViewTestCase):
+#
+#     def setUp(self):
+#         super(FunctionalTestCase, self).setUp()
+#         self.browser = webdriver.Firefox()
+#         self.browser.implicitly_wait(3)
+#
+#     def tearDown(self):
+#         self.browser.quit()
+#
+    # def test_editor(self):
+    #     self.browser.get('%s%s' % (self.live_server_url, '/test/'))
+    #     username_input = self.browser.find_element_by_name("username")
+    #     username_input.send_keys('test')
+    #     password_input = self.browser.find_element_by_name("password")
+    #     password_input.send_keys('test')
+    #     self.browser.find_element_by_name('submit').click()
+    #     self.browser.implicitly_wait(10)
+    #     scribble = self.browser.find_element_by_class_name("scribble-wrapper")
+    #     self.assertTrue(scribble)
+    #     self.browser.implicitly_wait(10)
+    #     editor = self.browser.find_element_by_id("scribbleEditorContainer")
+    #     self.assertTrue(editor)
+    #     scribble.click()
+    #     time.sleep(1)
+    #     self.assertIn("height: 300px", editor.get_attribute('style'))
+    #     self.browser.implicitly_wait(10)
+    #     action = ActionChains(self.browser)
+    #     action.send_keys(Keys.ARROW_DOWN)
+    #     action.send_keys(Keys.ARROW_DOWN)
+    #     action.send_keys("<")
+    #     action.send_keys("p")
+    #     action.send_keys(">")
+    #     action.send_keys("This is a Test")
+    #     action.send_keys("<")
+    #     action.send_keys("/")
+    #     action.send_keys("p")
+    #     action.send_keys(">")
+    #     action.perform()
+    #     self.browser.find_element_by_class_name("save").click()
+    #     self.browser.implicitly_wait(10)
+    #     text = self.browser.find_element_by_css_selector("div.scribble-content p:nth-child(2)")
+    #     self.assertEqual("This is a Test", text.text)
+    #     scribble.click()
+    #     time.sleep(1)
+    #     action = ActionChains(self.browser)
+    #     action.send_keys(Keys.F11)
+    #     action.perform()
+    #     self.assertTrue(self.browser.find_element_by_class_name("CodeMirror-fullscreen"))
